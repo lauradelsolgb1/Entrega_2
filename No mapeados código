@@ -1,4 +1,7 @@
 #reads no mapeados del evol2
- samtools view -b -f4 Entrega_1/Mapeo/Evol2/alineamiento.sorted.bam > Entrega_2/punto_1/evol_2/reads_no_mapeados/evol2_unmmapped.bam
+samtools view -b -f4 Entrega_1/Mapeo/Evol2/alineamiento.sorted.bam > Entrega_2/punto_1/evol_2/reads_no_mapeados/evol2_unmmapped.bam
+samtools fastq evol2_unmmapped.bam > evol2_unmmapped.fastq
+
 #reads no mapeados del evol1
 samtools view -b -f4 Entrega_1/Mapeo/Evol1/alineamiento.sorted.bam > Entrega_2/punto_1/evol_1/reads_no_mapeados/evol1_unmmapped.bam
+samtools fastq evol1_unmmapped.bam > evol1_unmmapped.fastq
