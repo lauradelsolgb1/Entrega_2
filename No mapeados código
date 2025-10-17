@@ -1,7 +1,23 @@
-#reads no mapeados del evol2
+#PARA EVOL2
+#reads no mapeados 
 samtools view -b -f4 Entrega_1/Mapeo/Evol2/alineamiento.sorted.bam > Entrega_2/punto_1/evol_2/reads_no_mapeados/evol2_unmmapped.bam
 samtools fastq evol2_unmmapped.bam > evol2_unmmapped.fastq
+#Código para kraken
+kraken2 --db kraken_db/minikraken2_v2_8GB_201904_UPDATE --report Entrega_2/punto_1/evol_2/kraken_resultados/evol2_kraken.report --output Entrega_2/punto_1/evol_2/kraken_resultados/evol2_kraken.output --use-names --memory-mapping Entrega_2/punto_1/evol_2/reads_no_m
+apeados/evol2_unmmapped.fastq
+#Análisis del archivo .output
+cat Entrega_2/punto_1/evol_2/kraken_resultados/evol2_kraken.output | cut -f3 | sort | uniq -c
+#Krona
+ktImportTaxonomy Entrega_2/punto_1/evol_2/kraken_resultados/evol2_kraken.report -o Entrega_2/punto_1/evol_1/krona_resultados/evol2_krona.html
 
-#reads no mapeados del evol1
+#PARA EVOL1
+#reads no mapeados 
 samtools view -b -f4 Entrega_1/Mapeo/Evol1/alineamiento.sorted.bam > Entrega_2/punto_1/evol_1/reads_no_mapeados/evol1_unmmapped.bam
 samtools fastq evol1_unmmapped.bam > evol1_unmmapped.fastq
+#Código para kraken
+kraken2 --db kraken_db/minikraken2_v2_8GB_201904_UPDATE --report Entrega_2/punto_1/evol_1/kraken_resultados/evol1_kraken.report --output Entrega_2/punto_1/evol_1/kraken_resultados/evol1_kraken.output --use-names --memory-mapping Entrega_2/punto_1/evol_1/reads_no_m
+apeados/evol1_unmmapped.fastq
+#Análisis del archivo .output
+cat Entrega_2/punto_1/evol_1/kraken_resultados/evol1_kraken.output | cut -f3 | sort | uniq -c
+#Krona
+ktImportTaxonomy Entrega_2/punto_1/evol_1/kraken_resultados/evol1_kraken.report -o Entrega_2/punto_1/evol_1/krona_resultados/evol1_krona.html
