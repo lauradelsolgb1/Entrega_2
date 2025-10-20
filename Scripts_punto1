@@ -1,0 +1,106 @@
+#Flujo de trabajo
+# Creamos las carpetas a usar con los siguientes comandos y descomprimimos la base de
+datos minikraken v2
+- mkdir taxonimia_completa
+- cd taxonomia_completa
+- mkdir punto1
+- tar -xzvf minikraken2_v2_8GB_201904.tgz
+#(esto con el archivo .tgz en la carpeta “taxonomía_completa”)
+- mkdir databases
+- mv minikraken2_v2_8GB_201904_UPDATE databases/
+- cd taxonomía_completa
+- mkdir evol1
+- mkdir evol2
+- cd evol1
+- mkdir sam_to_bam reads_no_mapeados kraken_resultados
+bracken
+_
+resultados krona_visualization
+- cd ../
+- cd evol2
+- mkdir sam_to_bam reads_no_mapeados kraken_resultados
+bracken_resultados krona_visualization
+- cd sam_to_bam
+samtools view -b -@ 2 ../../../ensambles/evol2_mapped.sam >
+evol2_mapped.bam
+samtools sort -@ 2 evol2_mapped.bam -o evol2_mapped_sorted.bam
+samtools index evol2_mapped_sorted.bam
+#(creamos los sam_to_bam en caso de no haberlo hecho sino solo llamamos
+una copia)
+- cd ../
+- cd ../
+- cd evol1
+- cd sam_to_bam
+- samtools view -b -@ 2 ../../../ensambles/evol1_mapped.sam > evol1_mapped.
+bam
+samtools sort -@ 2 evol1_mapped.bam -o evol1_mapped_sorted.bam
+samtools index evol1_mapped_sorted.bam
+#(lo mismo para evol1)
+- cd ../
+- cd reads_no_mapeados
+- samtools fastq -f 4 -@ 2 ../sam_to_bam/evol1_mapped_sorted.bam -1 evol1_u
+nmapped_R1.fastq -2 evol1_unmapped_R2.fastq
+#con esto extraemos los reads nos mapeados de evol1 y los mismo haremos
+con evol2
+- cd ../
+- cd ../
+- cd evol2
+- cd reads_no_mapeados
+- samtools fastq -f 4 -@ 2 ../sam_to_bam/evol2_mapped_sorted.bam -1 evol2_u
+nmapped_R1.fastq -2 evol2_unmapped_R2.fastq
+- cd ../
+- cd kraken_resultados
+- $ kraken2 --db
+/home/biosergio/proyecto_bioinfo/taxonomia_completa/databases/minik
+raken2_v2_8GB_201904_UPDATE/ \
+--threads 1 \
+--memory-mapping \
+--report evol2_kraken_report.txt \
+--output evol2_kraken_output.txt \
+../reads_no_mapeados/evol2_unmapped.fastq
+#verifica la ruta donde tienes la database y hacemos lo mismo para evol1
+- cd ../
+- cd ../
+- cd evol1
+- cd kraken_resultados
+- $ kraken2 --db
+/home/biosergio/proyecto_bioinfo/taxonomia_completa/databases/minik
+raken2_v2_8GB_201904_UPDATE/ \
+--threads 1 \
+--memory-mapping \
+--report evol1_kraken_report.txt \
+--output evol1_kraken_output.txt \
+../reads_no_mapeados/evol1_unmapped.fastq
+- cd ../
+- cd bracken_resultados
+- bracken -d /home/biosergio/proyecto_bioinfo/taxonomia_completa/databases/
+minikraken2_v2_8GB_201904_UPDATE/ \
+-i ../kraken_resultados/evol1_kraken_report.txt \
+-o evol1_bracken_species.txt \
+-l S \
+-t 10
+#con esto sacamos resultados de bracken y ahora haremos lo mismo para
+evol2
+- cd ../
+- cd ../
+- cd evol2
+- cd bracken_resultados
+- bracken -d /home/biosergio/proyecto_bioinfo/taxonomia_completa/databases/
+minikraken2_v2_8GB_201904_UPDATE/ \
+-i ../kraken_resultados/evol2_kraken_report.txt \
+-o evol2_bracken_species.txt \
+-l S \
+-t 10
+- cd ../
+- cd krona_visualization
+- ktImportTaxonomy -o evol2_krona_report.html ../kraken_resultados/evol2_kr
+aken_report.txt
+- cd ../
+- cd ../
+- cd evol1
+- cd krona_visualization
+- ktImportTaxonomy -o evol1_krona_report.html ../kraken_resultados/evol1_kr
+aken_report.txt
+#en caso de error con el krona correr este comando
+- sudo kronatools_updateTaxonomy
+# este fue todo el flujo de trabajo para el punto 1
