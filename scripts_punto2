@@ -1,0 +1,37 @@
+Flujo punto 2
+- mkdir Punto2 #desde la misma jerarquía donde esta punto1
+- cd Punto2
+- mkdir evol1 evol2 referencia
+#con la siguiente instrucción se copiaran el genoma indexado de la
+#primera entrega el cual es necesario para proceder con el punto 2
+- cp ../../ensambles/ancestral_assembly/contigs.fasta referencia/
+- cp ../../ensambles/ancestral_assembly/contigs.fasta.fai referencia/
+#ahora enlazamos los archivos BAM del punto uno con estos para ocupar tanto espacio por el
+#peso de los archivos tanto para evol2 como evol1
+- cd evol2
+- ln -s /home/biosergio/proyecto_bioinfo/taxonomia_completa/Punto1/evol2/sa
+m_to_bam/evol2_mapped_sorted.bam .
+- ln -s /home/biosergio/proyecto_bioinfo/taxonomia_completa/Punto1/evol2/sa
+m_to_bam/evol2_mapped_sorted.bam.bai
+- cd ../
+- cd ../evol1
+- ln -s /home/biosergio/proyecto_bioinfo/taxonomia_completa/Punto1/evol1/sa
+m_to_bam/evol1_mapped_sorted.bam .
+- ln -s /home/biosergio/proyecto_bioinfo/taxonomia_completa/Punto1/evol1/sa
+m_to_bam/evol1_mapped_sorted.bam.bai .
+#ahora comenzamos con el llamado de variantes
+- cd ../
+- cd ../evol2
+- bcftools mpileup -B -Q 20 -f ../referencia/contigs.fasta evol2_mapped_sorted.bam |
+bcftools call -mv -Ov -o evol2_variantes.vcf
+- cd ../
+- cd ../evol1
+- bcftools mpileup -B -Q 20 -f ../referencia/contigs.fasta evol1_mapped_sorted.bam |
+bcftools call -mv -Ov -o evol1_variantes.vcf
+#ahora haremos el filtrado de variantes
+- bcftools filter -e "QUAL < 30 || DP < 10" evol1_variantes.vcf -Ov -o
+evol1_variantes_filtradas.vcf
+- cd ../
+- cd evol2
+- bcftools filter -e "QUAL < 30 || DP < 10" evol2_variantes.vcf -Ov -o
+evol2_variantes_filtradas.vcf
