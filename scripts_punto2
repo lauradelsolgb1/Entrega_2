@@ -9,12 +9,12 @@ cp ../../ensambles/ancestral_assembly/contigs.fasta.fai referencia/
 #ahora enlazamos los archivos BAM del punto uno con estos para ocupar tanto espacio por el
 #peso de los archivos tanto para evol2 como evol1
 cd evol2
-ln -s /home/biosergio/proyecto_bioinfo/taxonomia_completa/Punto1/evol2/sam_to_bam/evol2_mapped_sorted.bam .
-ln -s /home/biosergio/proyecto_bioinfo/taxonomia_completa/Punto1/evol2/sam_to_bam/evol2_mapped_sorted.bam.bai
+ln -s ../../Punto1/evol2/sam_to_bam/evol2_mapped_sorted.bam .
+ln -s ../../Punto1/evol2/sam_to_bam/evol2_mapped_sorted.bam.bai .
 cd ../
 cd ../evol1
-ln -s /home/biosergio/proyecto_bioinfo/taxonomia_completa/Punto1/evol1/sam_to_bam/evol1_mapped_sorted.bam .
-ln -s /home/biosergio/proyecto_bioinfo/taxonomia_completa/Punto1/evol1/sam_to_bam/evol1_mapped_sorted.bam.bai .
+ln -s ../../Punto1/evol1/sam_to_bam/evol1_mapped_sorted.bam .
+ln -s ../../Punto1/evol1/sam_to_bam/evol1_mapped_sorted.bam.bai .
 #ahora comenzamos con el llamado de variantes
 cd ../
 cd ../evol2
